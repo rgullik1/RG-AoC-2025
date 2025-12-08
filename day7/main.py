@@ -1,30 +1,59 @@
-def extract_data(file_path) -> list[list[int]]:
-    rows: list[list[str]] = []
+def extract_data(file_path: str) -> tuple[str, ...]:
+    rows: list[str] = []
     with open(file_path, "r") as f:
         for line in f:
-            line = line.strip()
-            line = line.replace(".", "0")
-            line = line.replace("^", "1")
-            line = line.replace("S", "1")
-            row = list(line)
-            print(row)
-            rows.append(row)
+            rows.append(line.strip())
+    return tuple(rows)
 
-    return [[int(x) for x in row] for row in rows]
+
+def count_timelines(grid: tuple[str, ...]) -> int:
+    height = len(grid)
+    width = len(grid[0])
+
+    start_row = start_col = None
+    for r, row in enumerate(grid):
+        c = row.find("S")
+        if c != -1:
+            start_row, start_col = r, c
+            break
+
+    initial_counts = [0] * width
+
+    initial_counts[start_col] = 1
+
+
+    def quantum_propagator(row_idx: int, counts_tuple: tuple[int, ...]) -> int:
+        if row_idx == height:
+            return sum(counts_tuple)
+
+        row = grid[row_idx]
+        counts = counts_tuple
+
+        next_counts = [0] * width
+        for c, count in enumerate(counts):
+            if count == 0:
+                continue
+
+            cell = row[c]
+
+            if cell == ".":  # straight down
+                next_counts[c] += count
+            elif cell == "^":  # splitter: split left/right
+                if c - 1 >= 0:
+                    next_counts[c - 1] += count
+                if c + 1 < width:
+                    next_counts[c + 1] += count
+
+        return quantum_propagator(row_idx + 1, tuple(next_counts))
+
+    return quantum_propagator(start_row + 1, tuple(initial_counts))
+
 
 def main():
-    tot_collisions = 0
-    rows = extract_data("data/testdata")
-    print(rows)
-    for i, row in enumerate(rows):
+    grid = extract_data("data/realdata")
+    timelines = count_timelines(grid)
+    print(timelines)
 
-        rows[i] = [a + b for a, b in zip(rows[i], rows[i+1])]
-        for i in range(1, len(rows)):
-            if
-        tot_collisions += 1
-        print(top_row)
-    print(rows)
 
-    print(tot_collisions)
 if __name__ == "__main__":
     main()
