@@ -38,7 +38,7 @@ def count_timelines(grid: tuple[str, ...]) -> int:
 
             if cell == ".":  # straight down
                 next_counts[c] += count
-            elif cell == "^":  # splitter: split left/right
+            elif cell == "^":  # splits left/right
                 if c - 1 >= 0:
                     next_counts[c - 1] += count
                 if c + 1 < width:
