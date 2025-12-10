@@ -1,9 +1,6 @@
 import re
 from random import randint
-from collections import deque
-from heapq import heappush, heappop
 from math import inf
-from collections import defaultdict
 import z3
 class Problem:
     def __init__(self, lights: list[bool], buttons: list[tuple[int, ...]], joltage: list[int]):
@@ -75,10 +72,6 @@ def solver(solution: list[bool], buttons: list[tuple[int, ...]]) -> float:
                 break
     return current_best
 
-from math import inf
-
-from math import inf
-from collections import defaultdict
 
 def solver_p2(solution: list[int], buttons: list[tuple[int, ...]]) -> float:
     opt = z3.Optimize()
