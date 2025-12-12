@@ -15,11 +15,25 @@ def extract_data(file_path: str) -> dict[str, list[str]]:
             devices[name] = outputs
     return devices
 
+def find_all_paths(devices: dict[str, list[str]], start: str, target: str) -> list[list[str]]:
+    paths: list[list[str]] = []
+    stack: list[tuple[str, list[str]]] = [(start, [])]
+    while stack:
+        node, path = stack.pop()
+        if node == target:
+            paths.append(path[:])
+            continue
+        for nxt in devices.get(node):
+            if nxt in path:
+                continue
+            stack.append((nxt, path + [nxt]))
+    return paths
+
 def main():
-    devices = extract_data('data/testdata')
-    print(devices)
-    current_outputs = devices.get('you', [])
-    while 'out' not in current_outputs:
-        current_outputs = devices.get(
+    devices = extract_data('data/realdata')
+    paths = find_all_paths(devices, 'you', 'out')
+    print('paths:', paths)
+    print('number of paths:', len(paths))
+
 if __name__ == '__main__':
     main()

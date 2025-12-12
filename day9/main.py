@@ -251,10 +251,6 @@ def all_valid_two(a: Point, b: Point, boundary: set[Point], poly: List[Point]) -
     return True
 
 def point_in_polygon(p: Point, poly: List[Point]) -> bool:
-    """
-    Returns True if point p is strictly inside the polygon given by poly (list of vertices).
-    Uses the even-odd (ray casting) rule.
-    """
     x, y = p
     inside = False
     n = len(poly)
@@ -278,10 +274,7 @@ def main():
     print("fill_green")
     greens = fill_green(reds)
     boundary = set(reds) | set(greens)
-
     print("top_rectangle_area_constricted")
     print(top_rectangle_area_constricted(reds, boundary))
-
-
 if __name__ == '__main__':
     main()
